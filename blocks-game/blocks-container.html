@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .block {
+          position: absolute;
+          background-color: blue;
+          cursor: move;
+          height: 100px;
+          width: 100px;
+          border: 2px solid black;
+        }   
+        #container1{
+            width: 700px;
+            height: 700px;
+            margin: auto;
+            margin-top: 100px;
+            background-color: paleturquoise;
+            border: 5px solid black;
+        }
+        </style>
+</head>
+<body>
+    <div id="container1"></div>
+
+    <script>
+        //add blocks to the container
+        /*
+        var node = document.createElement("LI");
+        var textnode = document.createTextNode("Water");
+        node.appendChild(textnode);
+        document.getElementById("myList").appendChild(node);
+        */
+        let cont = document.getElementById('container1');
+        //let contBoundsInfo = cont.getBoundingClientRect();
+        let width = cont.clientWidth;
+        let height = cont.clientHeight;
+        let bounds = [width, height];
+
+    </script>
+</body>
+</html>

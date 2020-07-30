@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Carousel Demo</title>
+    <style>
+        .carousel{
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+            border: 2px solid black;
+            text-align: center;
+            border-radius: 30px;
+            background-color: darkgray;
+        }
+    </style>
+</head>
+<body>
+    <div class="carousel" id="carousel_1">
+        <img src="img/one.jpg" alt="" height="350" width="500">
+        <img src="img/two.jpg" alt="" height="350" width="500" hidden>
+        <img src="img/three.jpg" alt="" height="350" width="500" hidden>
+        <img src="img/four.jpg" alt="" height="350" width="500" hidden>
+        <img src="img/five.jpg" alt="" height="350" width="500" hidden>
+        <img src="img/six.jpg" alt="" height="350" width="500" hidden>
+        <img src="img/seven.jpg" alt="" height="350" width="500" hidden>
+        <div class="buttons-panel">
+            <button id="btn_prev">Previous</button>
+            <button id="btn_next">Next</button>
+        </div>
+    </div>
+    <script>
+        document.onload = addEventListeners();
+        const carousel = $('carousel_1');
+        const images = carousel.getElementsByTagName('img');
+
+        function $(id) {
+            return document.getElementById(id);
+        }
+
+        function addEventListeners(){
+            $('btn_prev').addEventListener('click', prev);
+            $('btn_next').addEventListener('click', next);
+        }
+
+        function prev(){
+            let c = getCurrentImgIndex();
+            images[c].hidden = true;
+            if(c === 0){
+                images[images.length-1].hidden = false;
+            }
+            else{
+                images[c-1].hidden = false;
+            }
+        }
+
+        function next(){
+            let c = getCurrentImgIndex();
+            images[c].hidden = true;
+            images[(c+1) % images.length].hidden = false;
+        }
+
+        function getCurrentImgIndex() {
+            for (let i = 0; i < images.length; i++){
+                if (images[i].hidden === false)
+                    return i;
+            }    
+        }
+
+    </script>
+</body>
+</html>

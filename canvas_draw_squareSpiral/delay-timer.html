@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Square Spiral</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    
+    <h1>This is a square spiral</h1>
+    <p>
+        This spiral is drawn from some starting point, set using (x,y) coordinates measured from the top left corner.
+    </p>
+
+    <p>
+        The spiral proceeds from its starting point right, down, left, and up - expanding the distance it moves each time.
+    </p>
+    
+    <div class="canvas-container">
+        <!-- must set height and width of canvas inline -->
+        <canvas id="canvas" width="400" height="400">Browser does note support canvas</canvas>
+    </div>
+
+    <div class="controls">
+        
+        <label for="grain">Set grain </label>
+        <input class="range-input" type="range" id="grain" min="4" max="50" title="The space between lines" value="20" onchange="update()">
+        <br>
+        <!-- <label for="start">Set start </label>
+        <input class="num-input" type="text" id="start" title="Enter values as (integer,integer)" value="200,200" onchange="update()"> -->
+        
+        <label for="x">X </label>
+        <input class="range-input" type="range" id="x" min="0" max="400" title="starting x coordinate" value="200" onchange="update()">
+        <br>
+        <label for="y">Y </label>
+        <input class="range-input" type="range" id="y" min="0" max="400" title="starting y coordinate" value="200" onchange="update()">
+        <br>
+        <hr>
+        <button onclick="erase()">Erase</button>
+    </div>
+
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        draw(200, 200, 20);
+
+        function draw(startX, startY, grain){
+            
+            //define edges
+            let xEdgeVal = canvas.getAttribute('width');
+            let yEdgeVal = canvas.getAttribute('height');
+            
+            //define starting coordinates
+            let coords = [startX, startY]
+            context.moveTo(coords[0], coords[1]); //start the line
+    
+            let pixelIncrement = grain; // increases the length of the line on each iteration
+            let sign = 1; // sets the direction of the increment: 1 == right or down, -1 == left or up
+            while (true){
+                for (let i = 0; i < 2; i++){
+                    if (sign === 1){
+                        coords[i] += pixelIncrement;
+                    }
+                    else{
+                        coords[i] -= pixelIncrement;
+                    }
+
+                    
+
+                    context.lineTo(coords[0], coords[1]); // next point of line
+                    context.stroke(); //draw
+                    
+                    //delay = setTimeout(drawSegment, 3000, ...coords); 
+                    
+                }
+                //console.log(`${coords[0]}, ${coords[1]}, ${sign}`);
+                pixelIncrement += grain;
+                sign *= -1;
+                
+                if (isOutOfBounds([coords[0], coords[1]], [xEdgeVal, yEdgeVal])){
+                    //console.log(`${coords[0]}, ${coords[1]}, ${sign}`);
+                    return;
+                }
+                    
+            }
+
+        }
+
+        function drawSegment(x, y){
+            console.log(`${x}, ${y}`);
+            context.lineTo(x, y); // next point of line
+            context.stroke(); //draw
+        }
+
+        function isOutOfBounds(coordinates, bounds){
+            let length = coordinates.length;
+            if (length !== bounds.length)
+                return true;
+            
+            for (let i = 0; i < length; i++){
+                if (coordinates[i] < 0)
+                    return true;
+
+                if (coordinates[i] > bounds[i])
+                    return true;
+            }
+            return false;
+        }
+
+        function getValue(inputElement){
+            let temp = document.getElementById(inputElement);
+            if (temp == null)
+                return;
+            return temp.value;
+        }
+
+        function update(){
+
+            let grain = parseInt(getValue('grain'));
+            let x = parseInt(getValue('x'));
+            let y = parseInt(getValue('y'));
+            
+            //console.log(`${x}, ${y}, ${grain}`);
+            erase();
+            draw(x, y, grain);
+
+        }
+
+        function erase(){
+            context.clearRect(0,0, canvas.getAttribute('width'), canvas.getAttribute('height'));
+            //essential to clear the line buffer so that old line does not appear!
+            context.beginPath();
+        }
+
+    </script>
+
+</body>
+</html>

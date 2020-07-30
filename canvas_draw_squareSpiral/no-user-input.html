@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Square Spiral</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        function main(){
+            let canvas = document.getElementById('canvas');
+            let context = canvas.getContext('2d');
+            
+            //define edges
+            let xEdgeVal = canvas.getAttribute('width');
+            let yEdgeVal = canvas.getAttribute('height');
+            //define starting coordinates
+            let coords = [200, 200]
+            context.moveTo(coords[0], coords[1]); //start the line
+    
+            let pixelIncrement = 10; // increases the length of the line on each iteration
+            let sign = 1; // sets the direction of the increment: 1 == right or down, -1 == left or up
+            while (true){
+                for (let i = 0; i < 2; i++){
+                    if (sign === 1){
+                        coords[i] += pixelIncrement;
+                    }
+                    else{
+                        coords[i] -= pixelIncrement;
+                    }
+                    context.lineTo(coords[0], coords[1]); // next point of line
+                    context.stroke(); //draw
+                }
+
+                pixelIncrement += 5;
+                sign *= -1;
+
+                //ending condition
+                if (coords[0] > xEdgeVal || coords[0] < 0 || coords[1] > yEdgeVal || coords[1] < 0){
+                    break;
+                }
+            }
+
+            
+        }
+
+    </script>
+
+</head>
+<body onload="main()">
+    
+    <h1>This is a square spiral</h1>
+    
+    <div class="canvas-container">
+        <!-- must set height and width of canvas inline -->
+        <canvas id="canvas" width="400" height="400">Browser does note support canvas</canvas>
+    </div>
+
+</body>
+</html>

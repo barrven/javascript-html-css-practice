@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .myDiv{
+            width: 500px;
+            height: 500px;
+            background-color: antiquewhite;
+            margin: auto;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="myDiv" id="myDiv"></div>
+
+    <script>
+        let div = document.getElementById('myDiv');
+        let rect = div.getBoundingClientRect();
+        let str = '';
+        for (const propName in rect){
+            propValue = rect[propName]
+            //console.log(propName,propValue);
+            str += propName + ': ' + propValue + '<br>';         
+        }
+
+        div.innerHTML = str;
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>This shit</title>
+</head>
+<body>
+
+    <button id="btn">Test Me</button>
+
+    <script>
+        class Test{
+            constructor(){
+                this.num = 0;
+                this.btn = document.getElementById('btn');
+                var self = this;
+                this.btn.addEventListener('click', function(){
+                    console.log(self);
+                });
+            }
+
+            
+        }
+
+        t = new Test();
+        console.log(t);
+
+    </script>
+</body>
+</html>

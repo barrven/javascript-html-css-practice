@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing</title>
+    <style>
+        body{text-align: center;}
+    </style>
+<body>
+
+<canvas id="canvas" width="400" height="400" style="border: 1px solid black">
+    Your browser does not support the canvas element.
+</canvas>
+<hr>
+<button onclick="draw(200, 200)">Draw 200, 200</button>
+<button onclick="draw(100, 300)">Draw 100, 300</button>
+<button onclick="erase()">Erase</button>
+<button onclick="boundsWrapper()">Test Out of Bounds</button>
+
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+
+    function draw(x, y){
+        let coords = [x, y];       
+        context.moveTo(coords[0], coords[1]); //start
+
+        let inc = 10;
+        for (let i = 0; i < 10; i++){
+            for (let i = 0; i < 2; i++){
+                coords[i] += inc;
+                console.log(coords[i]);
+                context.lineTo(coords[0], coords[1]); //change
+                context.stroke(); //draw
+            }
+        }
+    }
+
+    function erase(){
+        context.clearRect(0,0,400,400);
+        context.beginPath(); 
+    }
+
+    function isOutOfBounds(coordinates, bounds){
+        let length = coordinates.length;
+        if (length !== bounds.length)
+            return true;
+        
+        for (let i = 0; i < length; i++){
+            if (coordinates[i] < 0)
+                return true;
+
+            if (coordinates[i] > bounds[i])
+                return true;
+        }
+        return false;
+    }
+
+    function boundsWrapper(){
+        let x = isOutOfBounds([10, 20], [10, 20]);
+        console.log(x);
+    }
+
+</script>  
+
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<style>
+.block {
+  position: absolute;
+  background-color: blue;
+  cursor: move;
+  height: 98px;
+  width: 98px;
+  border: 2px solid black;
+}
+</style>
+<body>
+
+<span class="block"></span>
+<span class="block"></span>
+<span class="block"></span>
+<span class="block"></span>
+<span class="block"></span>
+
+<script>
+let blocks = document.getElementsByClassName('block');
+for (let block of blocks){
+    setDraggableElement(block);
+}
+
+function setDraggableElement(element) {
+    let posX1 = 0, posY1 = 0, posX2 = 0, posY2 = 0;
+    element.addEventListener('mousedown', dragMouseDown); // add event listener to element
+    
+    function dragMouseDown(e) {
+        e.preventDefault(); //dont really need this
+        // get the mouse cursor position at startup:
+        posX1 = e.clientX;
+        posY1 = e.clientY;
+        //add event listeners to the document for dragging and mouseup
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag; // call a function whenever the cursor moves:
+    }
+
+    function elementDrag(e) {
+        e.preventDefault();
+        let newElmntX, newElmntY; 
+        //calculate the new cursor position:
+        //this will be a negative number when x or y is increasing
+        posX2 = posX1 - e.clientX;
+        posY2 = posY1 - e.clientY;
+        //store the proposed new element position
+        newElmntX = element.offsetLeft - posX2;
+        newElmntY = element.offsetTop - posY2;
+        //set the element's new position:
+        element.style.top = newElmntY + "px";
+        element.style.left = newElmntX + "px";
+        //get the next cursor position
+        posX1 = e.clientX;
+        posY1 = e.clientY;
+    }
+
+    function closeDragElement() {
+        //stop moving when mouse button is released
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
+
+}
+</script>
+</body>
+</html>

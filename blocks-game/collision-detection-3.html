@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<style>
+.block{
+    position: absolute;
+    background-color: blue;
+    cursor: move;
+    height: 100px;
+    width: 100px;
+    text-align: center;
+    color: white;
+}
+.block p{
+    padding: 0;
+    margin: 0;
+}
+/* *{
+    padding: 0;
+    margin: 0;
+} */
+.container{
+    border: 1px solid black;
+    width: 500px;
+    height: 500px;
+}
+#a{
+    top: 20px;
+    left: 50px;
+}
+#b{
+    top: 300px;
+    left: 300px;
+}
+</style>
+<body>
+
+
+
+<div class="container">
+    <div class="block" id="a"><p>A</p><p>Index 0</p><p class="info"></p></div>
+    <div class="block" id="b"><p>B</p><p>Index 1</p><p class="info"></p></div>
+</div>
+
+<script>
+    let blocks = document.getElementsByClassName('block');
+    let i = 0;
+for (let block of blocks){
+    setDraggableElement(block, i++);
+    block.innerHTML
+}
+
+function setDraggableElement(element, index) {
+    let posX1 = 0, posY1 = 0, posX2 = 0, posY2 = 0;
+    element.addEventListener('mousedown', dragMouseDown); // add event listener to element
+    
+    function dragMouseDown(e) {
+        e.preventDefault(); //dont really need this
+        // get the mouse cursor position at startup:
+        posX1 = e.clientX;
+        posY1 = e.clientY;
+        //add event listeners to the document for dragging and mouseup
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag; // call a function whenever the cursor moves:
+    }
+
+    function elementDrag(e) {
+        e.preventDefault();
+        let newElmntX, newElmntY; 
+        //calculate the new cursor position:
+        //this will be a negative number when x or y is increasing
+        posX2 = posX1 - e.clientX;
+        posY2 = posY1 - e.clientY;
+        //get the next cursor position
+        posX1 = e.clientX;
+        posY1 = e.clientY;
+        //store the proposed new element position
+        newElmntX = element.offsetLeft - posX2;
+        newElmntY = element.offsetTop - posY2;
+        //set the element's new position:
+        if (testForCollision()) {
+            element.style.top = newElmntY + "px";
+            element.style.left = newElmntX + "px";
+            
+            element.getElementsByClassName('info')[0].innerHTML = 
+            `<p>x${newElmntX}, y${newElmntY}</p><p>xw${element.clientWidth+newElmntX}, yh${element.clientHeight+newElmntY}</p>`;
+        }
+        else{
+            newElmntX = element.offsetLeft + posX2;
+            newElmntY = element.offsetTop + posY2;  
+            element.style.top = newElmntY + "px";
+            element.style.left = newElmntX + "px";
+        }
+    
+        
+    }
+
+    function closeDragElement() {
+        //stop moving when mouse button is released
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
+
+    function testForCollision(){
+        
+        if (isCollide(element, blocks[(index+1)%blocks.length])) {
+            return false;
+        }
+        return true;
+    }
+
+    function isCollide(a, b) {
+        var aRect = a.getBoundingClientRect();
+        var bRect = b.getBoundingClientRect();
+
+        // return !(
+        //     ((aRect.top + aRect.height) < (bRect.top)) || //a is above b
+        //     (aRect.top > (bRect.top + bRect.height)) || //a is below b
+        //     ((aRect.left + aRect.width) < bRect.left) || //a is to the left of b
+        //     (aRect.left > (bRect.left + bRect.width)) // a is to the right of b
+        // );
+
+        if((aRect.top + aRect.height) < (bRect.top)){
+            console.log('I am above the other');
+            return false;
+        }
+        if(aRect.top > (bRect.top + bRect.height)){
+            console.log('I am below the other');
+            return false;
+        }
+        if((aRect.left + aRect.width) < bRect.left){
+            console.log('I am to the left of the other');
+            return false;
+        }
+        if (aRect.left > (bRect.left + bRect.width)) {
+            console.log('I am to the right of the other');
+            return false;
+        }
+        return true;
+    }
+
+}
+
+</script>
+
+</body>
+</html>

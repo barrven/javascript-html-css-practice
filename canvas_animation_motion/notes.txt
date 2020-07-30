@@ -1,0 +1,6 @@
+## good tutprial on animation:
+https://spicyyoghurt.com/tutorials/html5-javascript-game-development/create-a-smooth-canvas-animation
+
+## and of course w3 schools
+https://www.w3schools.com/graphics/game_intro.asp
+

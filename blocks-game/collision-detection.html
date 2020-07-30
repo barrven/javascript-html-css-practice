@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<style>
+.block {
+  position: absolute;
+  background-color: blue;
+  cursor: move;
+  height: 98px;
+  width: 98px;
+  border: 2px solid black;
+  text-align: center;
+  color: white;
+}
+*{
+    padding: 0;
+    margin: 0;
+}
+.container{
+    border: 1px solid black;
+    width: 500px;
+    height: 500px;
+}
+#a{
+    top: 100px;
+    left: 300px;
+}
+#b{
+    top: 100px;
+    left: 50px;
+}
+</style>
+<body>
+
+
+
+<div class="container">
+    <div class="block" id="a"><p>A</p><p>Index 0</p></div>
+    <div class="block" id="b"><p>B</p><p>Index 1</p></div>
+    <!-- <span class="block"></span>
+    <span class="block"></span>
+    <span class="block"></span> -->
+</div>
+
+
+
+<script>
+    let containers = document.getElementsByClassName('container');
+    for (let cont of containers){
+        
+    }
+</script>
+
+
+<script>
+let blocks = document.getElementsByClassName('block');
+let i = 0;
+for (let block of blocks){
+    setDraggableElement(block, i++);
+    
+}
+
+function setDraggableElement(element, index) {
+    const elemH = element.clientWidth +2;
+    const elemW = element.clientHeight + 2;
+    let posX1 = 0, posY1 = 0, posX2 = 0, posY2 = 0;
+    let direction = '';
+    //element.onmousedown = dragMouseDown; // add event listener to element
+    element.addEventListener('mousedown', dragMouseDown);
+
+    function dragMouseDown(e) {
+        e.preventDefault(); //dont really need this
+        // get the mouse cursor position at startup:
+        posX1 = e.clientX;
+        posY1 = e.clientY;
+        //add event listeners to the document for dragging and mouseup
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag; // call a function whenever the cursor moves:
+    }
+
+    function elementDrag(e) {
+        e.preventDefault();
+        // calculate the new cursor position:
+        let newElmntX, newElmntY; 
+        //this will be a negative number when x or y is increasing
+        posX2 = posX1 - e.clientX;
+        posY2 = posY1 - e.clientY;
+        //get the next cursor position
+        posX1 = e.clientX;
+        posY1 = e.clientY;
+        //store the proposed new element position
+        newElmntX = element.offsetLeft - posX2;
+        newElmntY = element.offsetTop - posY2;
+
+        if(noCollision(newElmntX, newElmntY, posX2, posY2, index)){
+            // set the element's new position:
+            element.style.top = newElmntY + "px";
+            element.style.left = newElmntX + "px";
+
+            element.innerHTML = 
+            `<p>x${newElmntX}, y${newElmntY}</p><p>x${element.clientWidth+newElmntX}, y${element.clientHeight+newElmntY}</p>`;
+        }
+        
+    }
+
+    function closeDragElement() {
+        //stop moving when mouse button is released
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
+
+
+    function noCollision(x, y, xDir, yDir, index){
+        //console.log(xDir);
+        //check out of bounds
+        if(x > (500 - elemW) || y > (500-elemH) || x < 0 || y < 0){
+            return false;
+        }
+        
+        //get direction
+        //ex moving left to right.
+        //calc min x (x coord) max x (width), min y (ycoord) max y (height)  
+        //then get all the sets of coordinates that are at the same y and greater x
+        // yMatches = getYMatch(y, element.clientHeight, index);
+        // console.log(index);
+        // console.log(yMatches);
+        // if(xDir < 0){ 
+        //     for(yMatch of yMatches){
+        //         let matchXCoord = yMatch.offsetLeft;
+        //         if(x >= matchXCoord){
+        //             return false;
+        //         }
+        //     }
+        // }
+        
+
+        return true;
+    }
+
+    function getYMatch(y, h, index){
+        temp = [];
+        for (let i = 0; i < blocks.length; i++){
+            let objY = blocks[i].offsetTop;
+            if(objY >= y && objY <= h && i !== index){
+                temp.push(blocks[i]);
+            }
+        }
+        return temp;
+    }
+
+}
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click and Drag Div Tags</title>
+    <style>
+        .block {
+            position: absolute;
+            background-color: blue;
+            cursor: move;
+            height: 100px;
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="block"></div>
+    <div class="block"></div>
+    <div class="block"></div>
+    <div class="block"></div>
+    <div class="block"></div>
+    
+    <script>
+        let blocks = document.getElementsByClassName('block');
+        for (let block of blocks){
+            block.addEventListener('mousedown', initClick);
+        }
+    
+        function initClick(e) {
+            let x = 0, y = 0, deltX = 0, deltY = 0, x2 = 0, y2 = 0;
+            let element = this;
+            //store the old event handlers (if there are any) in case you need to put them back later
+            let oldMouseupHandler = document.onmouseup;
+            let oldMouseMoveHandler = document.onmousemove;
+            trackClickDrag(e);
+    
+            function trackClickDrag(e) {
+                // get the mouse cursor position at startup (click):
+                x = e.clientX;
+                y = e.clientY;
+                
+                //tracking the movement of the mouse while dragging is done by an event listener belonging to the document
+                //do not use addEventLister() for this https://stackoverflow.com/questions/6348494/addeventlistener-vs-onclick
+                document.onmousemove = function(e){
+                    //get the change in cursor position
+                    deltX = e.clientX - x;
+                    deltY = e.clientY - y;
+                    //move the element by the same amount as the cursor
+                    x2 = element.offsetLeft + deltX;
+                    y2 = element.offsetTop + deltY;
+                    //set the element's new position:
+                    element.style.top = y2 + "px";
+                    element.style.left = x2 + "px";
+                    //get the next cursor position
+                    x = e.clientX;
+                    y = e.clientY;
+                };
+    
+                document.onmouseup = function(){
+                    //stop moving when mouse button is released and replace the old handlers
+                    document.onmouseup = oldMouseupHandler;
+                    document.onmousemove = oldMouseMoveHandler;
+                };
+            }
+        }
+    </script>
+</body>
+</html>

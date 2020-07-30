@@ -1,0 +1,23 @@
+This app should be able to emulate children's building blocks in 2D
+
+Container that represents space in which blocks can be clicked and dragged around by the use.
+Blocks should be stackable and not occupy the same space as each other. 
+
+There should be a button to add more blocks and a dropdown menu to choose which type of block to add.
+
+Types of blocks are different shapes like triangles, circles, etc.
+
+## Attack plan:
+
+- get click and drag working
+- detect edges and other blocks
+
+Detect edges of container was easy but other blocks is much harder.
+It's also difficult to make it fail gracefully and consistently
+
+Putting collision detection for other blocks on hold for now. 
+
+Added user control of block color and size, as well as button to add more blocks.
+
+Want method to select blocks. and method to delete them.
+

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .block{
+            background-color: blue;
+            height: 20px;
+            width: 20px;
+            position: absolute;
+            /* left: 100;
+            right: 100; */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="block"></div>
+
+
+
+
+
+
+    <script>
+        let blocks = document.getElementsByClassName('block');
+        for (let element of blocks){
+            element.addEventListener('mousemove', reportCoordinates);
+        }
+
+        function reportCoordinates(event){
+            console.log(event.clientX);
+            console.log(event.clientY);
+
+            let x = event.clientX;
+            let y = event.clientY;
+
+            this.style.left = y + 'px';
+            this.style.top = y + 'px';
+
+        }
+    </script>
+</body>
+</html>
