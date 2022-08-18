@@ -22,13 +22,17 @@
     <div class="block"></div>
     
     <script>
+        //add the event listeners
         let blocks = document.getElementsByClassName('block');
         for (let block of blocks){
             block.addEventListener('mousedown', initClick);
         }
-    
+        
+        //wrapper function
         function initClick(e) {
-            let x = 0, y = 0, deltX = 0, deltY = 0, x2 = 0, y2 = 0;
+            //variables are declared here so they are accessible to the sub functions
+            let x, y, deltX, deltY, x2, y2;
+            //store the element in a variable here so it is accessible to event handlers attached to the document
             let element = this;
             //store the old event handlers (if there are any) in case you need to put them back later
             let oldMouseupHandler = document.onmouseup;
@@ -36,7 +40,7 @@
             trackClickDrag(e);
     
             function trackClickDrag(e) {
-                // get the mouse cursor position at startup (click):
+                // get the mouse cursor position at startup (mousedown)
                 x = e.clientX;
                 y = e.clientY;
                 

@@ -29,7 +29,7 @@
             margin: auto;
             margin-top: 10px;
             background-color: white;
-            border: 2px solid black;
+            /* border: 2px solid black; */
         }
         .control-panel{
             max-width: 680px;
@@ -71,16 +71,16 @@
 
     <div class="control-panel">
         <label for="color-selector">Color</label>
-        <input type="color" name="block-color" id="color-selector">
+        <input type="color" name="block-color" id="color-selector" oninput="updateCurrentBlock()">
 
         <label for="height-selector">Height</label>
-        <input type="range" min="10" max="500" value="100" name="height" id="height-selector">
+        <input type="range" min="10" max="502" value="100" name="height" id="height-selector" oninput="updateCurrentBlock()">
 
         <label for="width-selector">Width</label>
-        <input type="range" min="10" max="500" value="100" name="width" id="width-selector">
+        <input type="range" min="10" max="502" value="100" name="width" id="width-selector" oninput="updateCurrentBlock()">
         <br>
         <label for="show-coords">Show XY</label>
-        <input type="checkbox" id="show-coords" checked>
+        <input type="checkbox" id="show-coords" checked oninput="updateCurrentBlock()">
 
         <button onclick="addBlock()" class="btn-success">Add Block</button>
 
@@ -138,6 +138,15 @@
 
         function updateCurrentBlock(){
             if(currentBlock){
+                currentBlock.style.background = document.getElementById('color-selector').value;
+                currentBlock.style.height = document.getElementById('height-selector').value + 'px';
+                currentBlock.style.width = document.getElementById('width-selector').value + 'px';
+                if(document.getElementById('show-coords').checked){
+                    currentBlock.innerHTML = `x${currentBlock.offsetLeft}, y${currentBlock.offsetTop}`;
+                }
+                else{
+                    currentBlock.innerHTML = '';
+                }
                 console.log('updated');
             }
         }
